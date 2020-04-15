@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="utf-8">
+        <title>Exemple</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" charset="utf-8"></script>
+      </head>
+      <body>
+        <div id="cxpmClientAccountWidget"
+           data-salon="sial"
+           data-sessionSalon="sial_2020"
+           data-application="88e4012a56c4a80dbcfe831fa21a453fca9da353"
+           data-language="eng-GB"
+           >
+          <!-- Nothing here -->
+        </div>
+
+
+
+        <script src="https://connect.prod.comexposium-webservices.com/js/loader.min.js"></script>
+
+
+        <script type="text/javascript">
+          $(document).on("comexposiumConnectLoaded", function(){
+            console.log("ComexposiumConnect loaded");
+            comexposiumCap.openCap('request-password');
+          });
+
+          $(document).on('comexposiumConnectLogged', function(event, email, token, isExhibitor) {
+            console.log(email, token, isExhibitor);
+            window.location = "https://www.sialparis.com";
+          });
+        </script>
+      </body>
+    </html>
