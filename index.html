@@ -32,7 +32,6 @@
                   if (prop == "makeThings") {
                       let observer = new MutationObserver(function(mutations) {
                           if ($('a[data-captarget="update-password"]').length) {
-                              // console.log("Exist, lets do something");
                               $('a[data-captarget="update-password"]').click();
                               if ($('#update-password').length) {
                                 observer.disconnect();
