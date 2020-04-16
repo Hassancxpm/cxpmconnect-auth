@@ -23,10 +23,36 @@
             comexposiumCap.openCap('request-password');
           });
 
+          let handler = {
+              makeThings: 0
+          };
+          let globalHandler = new Proxy(handler, {
+              set: function(obj, prop, value) {
+                  obj[prop] = value
+                  if (prop == "makeThings") {
+                      let observer = new MutationObserver(function(mutations) {
+                          if ($('a[data-captarget="update-password"]').length) {
+                              // console.log("Exist, lets do something");
+                              $('a[data-captarget="update-password"]').click();
+                              if ($('#update-password').length) {
+                                observer.disconnect();
+                              }
+                          }
+                      });
+                      // start observing
+                      observer.observe(document.body, {
+                          childList: true,
+                          subtree: true
+                      });
+                  }
+                  return true;
+              }
+          });
+
           $(document).on('comexposiumConnectLogged', function(event, email, token, isExhibitor) {
             console.log(email, token, isExhibitor);
+            globalHandler.makeThings = 1;
             comexposiumCap.openCap("my-account");
-            //window.location = '/success.html';
           });
         </script>
       </body>
