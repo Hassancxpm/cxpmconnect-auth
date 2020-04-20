@@ -1,63 +1,89 @@
 <!DOCTYPE html>
-    <html>
-      <head>
-        <meta charset="utf-8">
-        <title>Reset password success</title>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" charset="utf-8"></script>
-        <style>
-          #cap-nav ul {
-            display: none;
-          }
-        </style>
-      </head>
-      <body>
-        <div id="cxpmClientAccountWidget"
-           data-salon="sial"
-           data-sessionSalon="sial_2020"
-           data-application="88e4012a56c4a80dbcfe831fa21a453fca9da353"
-           data-language="eng-GB"
-           >
-          <!-- Nothing here -->
-        </div>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Reset password success</title>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
+      charset="utf-8"
+    ></script>
+    <style>
+      #cap-nav ul {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="cxpmClientAccountWidget"
+      data-salon="sial"
+      data-sessionSalon="sial_2020"
+      data-application="88e4012a56c4a80dbcfe831fa21a453fca9da353"
+      data-language="eng-GB"
+    >
+      <!-- Nothing here -->
+    </div>
 
-        <script src="https://connect.prod.comexposium-webservices.com/js/loader.min.js"></script>
+    <script src="https://connect.prod.comexposium-webservices.com/js/loader.min.js"></script>
 
-        <script type="text/javascript">
-          $(document).on("comexposiumConnectLoaded", function(){
-            console.log("ComexposiumConnect loaded");
-            comexposiumCap.openCap('request-password');
-          });
+    <script type="text/javascript">
+      $(document).on("comexposiumConnectLoaded", function () {
+        console.log("ComexposiumConnect loaded");
+        comexposiumCap.openCap("request-password");
+      });
 
-          let handler = {
-              makeThings: 0,
-          };
-          let globalHandler = new Proxy(handler, {
-              set: function(obj, prop, value) {
-                  obj[prop] = value
-                  if (prop == "makeThings") {
-                      let observer = new MutationObserver(function(mutations) {
-                          if ($('a[data-captarget="update-password"]').length) {
-                              setTimeout(function () {$('a[data-captarget="update-password"]').click();}, 50);
-                              if ($('#update-password').length) {
-                                observer.disconnect();
-                              }
-                          }
-                      });
-                      // start observing
-                      observer.observe(document.body, {
-                          childList: true,
-                          subtree: true
-                      });
-                  }
-                  return true;
+      let handler = {
+        makeThings: 0,
+      };
+      let globalHandler = new Proxy(handler, {
+        set: function (obj, prop, value) {
+          obj[prop] = value;
+          if (prop == "makeThings") {
+            let observer = new MutationObserver(function (mutations) {
+              if ($('a[data-captarget="update-password"]').length) {
+                setTimeout(function () {
+                  $('a[data-captarget="update-password"]').click();
+                }, 50);
+                if ($("#update-password").length) {
+                  observer.disconnect();
+                }
               }
-          });
+            });
+            // start observing
+            observer.observe(document.body, {
+              childList: true,
+              subtree: true,
+            });
+          }
+          return true;
+        },
+      });
 
-          $(document).on('comexposiumConnectLogged', function(event, email, token, isExhibitor) {
-            console.log(email, token, isExhibitor);
-            comexposiumCap.openCap("my-account");
-            globalHandler.makeThings = 1;
-          });
-        </script>
-      </body>
-    </html>
+      $(document).on("comexposiumConnectLogged", function (
+        event,
+        email,
+        token,
+        isExhibitor
+      ) {
+        console.log(email, token, isExhibitor);
+        comexposiumCap.openCap("my-account");
+        globalHandler.makeThings = 1;
+      });
+
+      $(document).on("comexposiumConnectLoaded", function () {
+        console.log("ComexposiumConnect loaded");
+        comexposiumCap.openCap("register");
+
+        let params = new URLSearchParams(document.location.search);
+
+        if (params.has("email")) {
+          const email = params.get("email");
+          console.log(email);
+          $(
+            '.validate-field-wrapper input[type="email"][data-type="email"]'
+          ).val(email);
+        }
+      });
+    </script>
+  </body>
+</html>
